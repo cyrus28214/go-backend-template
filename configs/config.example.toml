@@ -1,0 +1,18 @@
+[server]
+address = "127.0.0.1:8080"
+mode = "development" # development, production
+
+[logger]
+level = "debug" # debug, info, warn, error
+dir = "logs" # logs directory
+add_source = true # true, false
+
+[database]
+dsn = "postgresql://postgres:postgres@localhost:5432/postgres" # postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&...]
+
+[database.logger] # for gorm logger
+level = "info" # silent, error, warn, info
+slow_threshold = "200" # milliseconds
+
+[jwt]
+jwt_secret_hex = "your_jwt_secret" # in hex format, you can use `openssl rand -hex 32` to generate a random secret key
