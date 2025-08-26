@@ -30,11 +30,13 @@ func (h *UserHandler) Login(c *gin.Context) {
 
 	token, err := h.userService.Login(ctx, &req)
 	var appErr *apperror.AppError
-	if errors.As(err, &appErr) {
-		response.Error(c, appErr)
-		return
-	} else {
-		l.Error("unexpected error", "error", err)
+	if err != nil {
+		if errors.As(err, &appErr) {
+			response.Error(c, appErr)
+			return
+		} else {
+			panic(err)
+		}
 	}
 
 	response.Success(c, gin.H{"token": token})

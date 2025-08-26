@@ -32,6 +32,11 @@ func Success(c *gin.Context, data any) {
 }
 
 func Error(c *gin.Context, err *apperror.AppError) {
+	// 安全检查：如果 err 为 nil，使用默认的内部服务器错误
+	if err == nil {
+		err = apperror.ErrInternal
+	}
+
 	ctx := c.Request.Context()
 	var traceID *uuid.UUID
 	if traceIDValue := ctx.Value(contextkey.TraceIDKey); traceIDValue != nil {

@@ -46,7 +46,8 @@ func (s *UserService) Login(ctx context.Context, req *LoginRequest) (string, *ap
 			l.Debug("user not found", "error", err)
 			return "", ErrUserNotFound.Wrap(err)
 		}
-		panic(err)
+		l.Error("database error", "error", err)
+		return "", apperror.ErrInternal.Wrap(err)
 	}
 
 	// 2. 验证密码
@@ -69,7 +70,8 @@ func (s *UserService) Login(ctx context.Context, req *LoginRequest) (string, *ap
 
 	tokenStr, err := token.SignedString([]byte(s.jwtConfig.JwtSecretHex))
 	if err != nil {
-		panic(err)
+		l.Error("failed to sign JWT token", "error", err)
+		return "", apperror.ErrInternal.Wrap(err)
 	}
 
 	return tokenStr, nil

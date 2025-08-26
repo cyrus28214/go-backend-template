@@ -24,13 +24,15 @@ func (e *AppError) Unwrap() error {
 }
 
 func (e *AppError) Wrap(cause error) *AppError {
-	e.cause = cause
-	return e
+	newErr := *e
+	newErr.cause = cause
+	return &newErr
 }
 
 func (e *AppError) WithData(data any) *AppError {
-	e.Data = data
-	return e
+	newErr := *e
+	newErr.Data = data
+	return &newErr
 }
 
 func NewAppError(code string, httpStatus int) *AppError {
